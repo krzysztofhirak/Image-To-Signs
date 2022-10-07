@@ -1,20 +1,11 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class Converter {
 
-//    public static char space = (char) 32;
-//    public static char period = (char) 46;
-//    public static char asterisk = (char) 42;
-//    public static char o = (char) 111;
-//    public static char zero = (char) 48;
-//    public static char hash = (char) 35;
-//    public static char ampersand = (char) 38;
-//    public static char at = (char) 64;
-//    public static char X = (char) 88;
-//    public static char EOL = (char) 10;
-//    public static String newline = String.valueOf('\n');
     public static char space = ' ';
     public static char acute = '`';
     public static char period = '.';
@@ -39,7 +30,7 @@ public class Converter {
         int width = pixels.length;
         int height = pixels[0].length;
         System.out.println(width + " " + height);
-        char[][] chars = new char[width+1][(int) Math.ceil(height/2)];
+        char[][] chars = new char[width+1][(int) Math.ceil((double) height/2)];
         for(int x = 0; x < width; x++){
             for(int y = 0; y < height-1; y=y+2){
                 chars[x][y/2] = PixelToSignBetter(pixels[x][y]);
@@ -52,8 +43,13 @@ public class Converter {
     }
 
     public BufferedImage resize(BufferedImage image, double factor) throws IOException {
+        double proportions = (double) image.getWidth()/image.getHeight();
         int targetWidth = (int) (image.getWidth() * factor);
         int targetHeight = (int) (image.getHeight() * factor);
+        if(targetWidth > 1024){
+            targetWidth = 1024;
+            targetHeight = (int) Math.floor(targetWidth/proportions);
+        }
         BufferedImage resizedImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_RGB);
         Graphics2D graphics2D = resizedImage.createGraphics();
         graphics2D.drawImage(image, 0, 0, targetWidth, targetHeight, null);
@@ -156,6 +152,26 @@ public class Converter {
             strings[a] = stringBuilders[a].toString();
         }
         return strings;
+    }
+
+    public String textFromFile(){
+        BufferedReader br;
+        String text;
+        try {
+            br = new BufferedReader(new FileReader(ReadAndWrite.TEXT_FILE_PATH));
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                sb.append(System.lineSeparator());
+                line = br.readLine();
+            }
+            text = sb.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return text;
     }
 
     public static char[][] invert(char[][] chars){

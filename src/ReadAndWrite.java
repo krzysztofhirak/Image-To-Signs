@@ -7,8 +7,8 @@ import java.io.IOException;
 
 public class ReadAndWrite {
 
-    public static String IMAGE_FILE_PATH = "C:\\Users\\krish\\Desktop\\Programs\\Private\\Java\\Image to Signs\\Image.jpg";
-    public static String TEXT_FILE_PATH = "C:\\Users\\krish\\Desktop\\Programs\\Private\\Java\\Image to Signs\\Image.txt";
+    public static String IMAGE_FILE_PATH = "C:\\Users\\khirak\\OneDrive - Capgemini\\Desktop\\Private\\Projects\\Java\\Image-To-Signs\\Image.jpg";
+    public static String TEXT_FILE_PATH = "C:\\Users\\khirak\\OneDrive - Capgemini\\Desktop\\Private\\Projects\\Java\\Image-To-Signs\\Image.txt";
 
     public BufferedImage ReadImage(){
         BufferedImage image = null;
@@ -42,6 +42,7 @@ public class ReadAndWrite {
     public void WriteImageToNotepad(char[][] chars){
         try {
             FileWriter myWriter = new FileWriter(TEXT_FILE_PATH);
+            System.out.println(TEXT_FILE_PATH);
 //            myWriter.write(Converter.charsArrayToString(chars));
             String[] strings = Converter.charsArrayToStringsArray(Converter.invert(chars));
 //            String[] strings = Converter.charsArrayToStringsArray(chars);
